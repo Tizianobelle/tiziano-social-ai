@@ -1,4 +1,5 @@
 [build]
+  command = "node mobile-inject.mjs"
   publish = "."
 
 [[headers]]
