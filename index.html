@@ -18,7 +18,7 @@ async function callAgent(payload){
  var s=await getSession();
  var r;try{r=await fetch(U+'/functions/v1/tiziano-social-agent',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+s.access_token,'apikey':K},body:JSON.stringify(payload)})}catch(fe){var fm=fe&&fe.message?fe.message:String(fe);throw new Error('Connessione Edge Function fallita: '+fm)}
  var txt=await r.text(),j={}; try{j=txt?JSON.parse(txt):{}}catch(x){throw new Error('Risposta agente non valida: '+txt.slice(0,160))}
- if(!r.ok){var msg='';if(typeof j.error==='string')msg=j.error;else if(j.error)try{msg=JSON.stringify(j.error)}catch(_){msg=String(j.error)};if(!msg&&typeof j.detail==='string')msg=j.detail;if(!msg)try{msg=JSON.stringify(j)}catch(_){msg='Errore agente HTTP '+r.status}throw new Error(msg||('Errore agente HTTP '+r.status));}
+ if(!r.ok){var msg='';if(typeof j.error==='string')msg=j.error;else if(j.error)try{msg=JSON.stringify(j.error)}catch(_){msg=String(j.error)};if(typeof j.detail==='string'&&j.detail)msg+=(msg?' — ':'')+j.detail;if(j.stage)msg+=' ['+j.stage+']';if(j.code)msg+=' ('+j.code+')';if(!msg)try{msg=JSON.stringify(j)}catch(_){msg='Errore agente HTTP '+r.status}throw new Error(msg||('Errore agente HTTP '+r.status));}
  return j;
 }
 async function runAgent(){
