@@ -25,9 +25,16 @@ async function getSession(){
  if(res.data.session) return res.data.session;
  var email='tiziobelle@gmail.com';
  setStatus('Accesso richiesto: invio link a '+email+'…');
- var out=await sb.auth.signInWithOtp({email:email,options:{emailRedirectTo:'https://tiziano-social-ai-live.netlify.app/',shouldCreateUser:false}});
+ var code=window.prompt('Inserisci il codice di accesso ricevuto via email. Se non hai ancora il codice, premi OK per riceverlo:');
+ if(code&&code.trim()){
+   var vr=await sb.auth.verifyOtp({email:email,token:code.trim(),type:'email'});
+   if(vr.error) throw vr.error;
+   if(vr.data&&vr.data.session) return vr.data.session;
+   throw new Error('Codice verificato ma sessione non disponibile');
+ }
+ var out=await sb.auth.signInWithOtp({email:email,options:{shouldCreateUser:false}});
  if(out.error) throw out.error;
- throw new Error('Link di accesso inviato a '+email+'. Apri la mail su questo dispositivo e premi il link, poi torna qui.');
+ throw new Error('Codice di accesso inviato a '+email+'. Premi di nuovo Esegui comando e inserisci il codice ricevuto.');
 }
 async function callAgent(payload){
  var s=await getSession();
