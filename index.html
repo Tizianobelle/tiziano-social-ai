@@ -29,7 +29,7 @@ async function runAgent(){
   b.disabled=true;b.textContent='⏳ Avvio…';setStatus('Connessione all’agente…');
   var j=await callAgent({action:'run_agent',command:cmd});
   showRun(j.run||j); await loadRuns(false);
- }catch(e){setStatus('Errore: '+e.message)}
+ }catch(e){var m='';if(e&&typeof e.message==='string')m=e.message;else if(typeof e==='string')m=e;else try{m=JSON.stringify(e)}catch(_){m=String(e)};setStatus('Errore: '+m)}
  finally{b.disabled=false;b.textContent='▶ Esegui comando'}
 }
 function showRun(r){
