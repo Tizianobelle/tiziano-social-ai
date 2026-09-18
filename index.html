@@ -23,11 +23,11 @@ async function getSession(){
  var res=await sb.auth.getSession();
  if(res.error) throw res.error;
  if(res.data.session) return res.data.session;
- var email=window.prompt('Inserisci la tua email per ricevere il link di accesso:');
- if(!email) throw new Error('Accesso necessario');
+ var email='tiziobelle@gmail.com';
+ setStatus('Accesso richiesto: invio link a '+email+'…');
  var out=await sb.auth.signInWithOtp({email:email,options:{emailRedirectTo:window.location.origin+'/',shouldCreateUser:false}});
  if(out.error) throw out.error;
- throw new Error('Link inviato via email. Aprilo e torna qui.');
+ throw new Error('Link di accesso inviato a '+email+'. Apri la mail su questo dispositivo e premi il link, poi torna qui.');
 }
 async function callAgent(payload){
  var s=await getSession();
