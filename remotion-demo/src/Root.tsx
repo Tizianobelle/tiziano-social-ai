@@ -3,6 +3,8 @@ import { CtaScene } from "./CtaScene";
 import { FeaturesScene } from "./FeaturesScene";
 import { HookScene } from "./HookScene";
 import { SocialReel } from "./SocialReel";
+import { MistakeScene } from "./tips/MistakeScene";
+import { TipsReel } from "./tips/TipsReel";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -19,6 +21,29 @@ export const RemotionRoot: React.FC = () => {
         <Composition id="Hook" component={HookScene} durationInFrames={105} fps={30} width={1080} height={1920} />
         <Composition id="Features" component={FeaturesScene} durationInFrames={150} fps={30} width={1080} height={1920} />
         <Composition id="CTA" component={CtaScene} durationInFrames={135} fps={30} width={1080} height={1920} />
+      </Folder>
+      <Composition
+        id="TipsReel"
+        component={TipsReel}
+        durationInFrames={492}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+      <Folder name="TipsScenes">
+        <Composition
+          id="Mistake"
+          component={MistakeScene}
+          durationInFrames={120}
+          fps={30}
+          width={1080}
+          height={1920}
+          defaultProps={{
+            number: 1,
+            mistake: "Inizio troppo lento",
+            fix: "cattura l'attenzione nei primi 2 secondi.",
+          }}
+        />
       </Folder>
     </>
   );
