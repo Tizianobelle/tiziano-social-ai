@@ -1,22 +1,30 @@
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { fontFamily } from "../font";
 import { Highlight } from "./Highlight";
-import { theme } from "./theme";
+import { useTheme } from "./theme";
 
-export const TipsOutro: React.FC = () => {
+export type TipsOutroProps = {
+  readonly emoji: string;
+  readonly highlighted: string;
+  readonly title: string;
+  readonly subtitle: string;
+};
+
+export const TipsOutro: React.FC<TipsOutroProps> = ({ emoji, highlighted, title, subtitle }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const theme = useTheme();
 
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: theme.accent,
+        backgroundColor: theme.outroBackground,
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
         padding: 90,
         fontFamily,
-        color: "white",
+        color: theme.outroInk,
       }}
     >
       <div
@@ -34,13 +42,13 @@ export const TipsOutro: React.FC = () => {
           }),
         }}
       >
-        📌
+        {emoji}
       </div>
-      <div style={{ marginTop: 40, fontSize: 120, fontWeight: 900, lineHeight: 1.1, color: theme.ink }}>
-        <Highlight from={0.6 * fps} color="white">
-          Salvalo
+      <div style={{ marginTop: 40, fontSize: 120, fontWeight: 900, lineHeight: 1.1 }}>
+        <Highlight from={0.6 * fps} color={theme.outroMarker} textColor={theme.outroMarkerInk}>
+          {highlighted}
         </Highlight>{" "}
-        per dopo
+        {title}
       </div>
       <div
         style={{
@@ -53,7 +61,7 @@ export const TipsOutro: React.FC = () => {
           }),
         }}
       >
-        Segui per altri consigli ogni giorno
+        {subtitle}
       </div>
     </AbsoluteFill>
   );

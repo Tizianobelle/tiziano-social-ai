@@ -1,7 +1,16 @@
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { fontFamily } from "../font";
 import { Highlight } from "./Highlight";
-import { theme } from "./theme";
+import { useTheme } from "./theme";
+
+export type TipsHookProps = {
+  readonly count: number;
+  /** Headline after the big number, split into words that pop in one by one. */
+  readonly words: readonly string[];
+  /** Index in `words` of the word that gets the marker highlight. */
+  readonly highlightIndex: number;
+  readonly subtitle: string;
+};
 
 const Word: React.FC<{ readonly children: React.ReactNode; readonly at: number }> = ({
   children,
@@ -30,9 +39,11 @@ const Word: React.FC<{ readonly children: React.ReactNode; readonly at: number }
   );
 };
 
-export const TipsHook: React.FC = () => {
+export const TipsHook: React.FC<TipsHookProps> = ({ count, words, highlightIndex, subtitle }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const theme = useTheme();
+  const lastWordAt = 8 + (words.length - 1) * 4;
 
   return (
     <AbsoluteFill
@@ -63,17 +74,14 @@ export const TipsHook: React.FC = () => {
           }),
         }}
       >
-        3
+        {count}
       </div>
-      <div style={{ fontSize: 124, fontWeight: 900, lineHeight: 1.1, marginTop: 20 }}>
-        <Word at={8}>errori</Word>
-        <Word at={13}>che</Word>
-        <Word at={18}>
-          <Highlight from={30}>rovinano</Highlight>
-        </Word>
-        <Word at={23}>i</Word>
-        <Word at={26}>tuoi</Word>
-        <Word at={29}>Reel</Word>
+      <div style={{ fontSize: 120, fontWeight: 900, lineHeight: 1.1, marginTop: 20 }}>
+        {words.map((word, i) => (
+          <Word key={i} at={8 + i * 4}>
+            {i === highlightIndex ? <Highlight from={lastWordAt + 4}>{word}</Highlight> : word}
+          </Word>
+        ))}
       </div>
       <div
         style={{
@@ -86,7 +94,7 @@ export const TipsHook: React.FC = () => {
           }),
         }}
       >
-        (il numero 2 lo fanno quasi tutti)
+        {subtitle}
       </div>
     </AbsoluteFill>
   );

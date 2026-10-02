@@ -1,8 +1,9 @@
 import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
-import { theme } from "./theme";
+import { useTheme } from "./theme";
 
 // Story-style progress bar so viewers know how much is left.
 export const ProgressBar: React.FC = () => {
+  const theme = useTheme();
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
 
@@ -15,7 +16,7 @@ export const ProgressBar: React.FC = () => {
         right: 60,
         height: 10,
         borderRadius: 5,
-        backgroundColor: "rgba(20,20,20,0.15)",
+        backgroundColor: `rgba(${theme.inkRgb},0.15)`,
         overflow: "hidden",
       }}
     >

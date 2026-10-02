@@ -4,7 +4,8 @@ import { FeaturesScene } from "./FeaturesScene";
 import { HookScene } from "./HookScene";
 import { SocialReel } from "./SocialReel";
 import { MistakeScene } from "./tips/MistakeScene";
-import { TipsReel } from "./tips/TipsReel";
+import { aiMistakesContent, reelMistakesContent } from "./tips/content";
+import { TIPS_REEL_DURATION, TipsReel } from "./tips/TipsReel";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -25,10 +26,20 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="TipsReel"
         component={TipsReel}
-        durationInFrames={492}
+        durationInFrames={TIPS_REEL_DURATION}
         fps={30}
         width={1080}
         height={1920}
+        defaultProps={reelMistakesContent}
+      />
+      <Composition
+        id="AiTipsReel"
+        component={TipsReel}
+        durationInFrames={TIPS_REEL_DURATION}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={aiMistakesContent}
       />
       <Folder name="TipsScenes">
         <Composition

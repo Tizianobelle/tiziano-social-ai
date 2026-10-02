@@ -1,12 +1,14 @@
 import { Easing, interpolate, useCurrentFrame } from "remotion";
-import { theme } from "./theme";
+import { useTheme } from "./theme";
 
 // Marker-style highlight that sweeps from left to right starting at `from`.
 export const Highlight: React.FC<{
   readonly children: React.ReactNode;
   readonly from: number;
   readonly color?: string;
-}> = ({ children, from, color = theme.marker }) => {
+  readonly textColor?: string;
+}> = ({ children, from, color, textColor }) => {
+  const theme = useTheme();
   const frame = useCurrentFrame();
 
   return (
@@ -18,7 +20,7 @@ export const Highlight: React.FC<{
           right: -12,
           top: "18%",
           bottom: "8%",
-          backgroundColor: color,
+          backgroundColor: color ?? theme.marker,
           borderRadius: 10,
           rotate: "-1.5deg",
           transformOrigin: "left center",
@@ -29,7 +31,7 @@ export const Highlight: React.FC<{
           }),
         }}
       />
-      <span style={{ position: "relative" }}>{children}</span>
+      <span style={{ position: "relative", color: textColor }}>{children}</span>
     </span>
   );
 };

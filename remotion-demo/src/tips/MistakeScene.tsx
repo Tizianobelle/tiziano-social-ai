@@ -1,6 +1,6 @@
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { fontFamily } from "../font";
-import { theme } from "./theme";
+import { useTheme } from "./theme";
 
 export type MistakeSceneProps = {
   readonly number: number;
@@ -9,6 +9,7 @@ export type MistakeSceneProps = {
 };
 
 export const MistakeScene: React.FC<MistakeSceneProps> = ({ number, mistake, fix }) => {
+  const theme = useTheme();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const strikeAt = 1.1 * fps;
@@ -77,7 +78,7 @@ export const MistakeScene: React.FC<MistakeSceneProps> = ({ number, mistake, fix
           style={{
             WebkitBoxDecorationBreak: "clone",
             boxDecorationBreak: "clone",
-            backgroundImage: `linear-gradient(${theme.accent}, ${theme.accent})`,
+            backgroundImage: `linear-gradient(${theme.strike}, ${theme.strike})`,
             backgroundRepeat: "no-repeat",
             backgroundPosition: "0 58%",
             backgroundSize: `${interpolate(frame, [strikeAt, strikeAt + 10], [0, 100], {
@@ -85,7 +86,7 @@ export const MistakeScene: React.FC<MistakeSceneProps> = ({ number, mistake, fix
               extrapolateRight: "clamp",
               easing: Easing.bezier(0.65, 0, 0.35, 1),
             })}% 12px`,
-            color: `rgba(20,20,20,${interpolate(frame, [strikeAt, strikeAt + 10], [1, 0.45], {
+            color: `rgba(${theme.inkRgb},${interpolate(frame, [strikeAt, strikeAt + 10], [1, 0.45], {
               extrapolateLeft: "clamp",
               extrapolateRight: "clamp",
             })})`,
@@ -99,8 +100,8 @@ export const MistakeScene: React.FC<MistakeSceneProps> = ({ number, mistake, fix
           marginTop: 80,
           padding: "48px 56px",
           borderRadius: 40,
-          backgroundColor: theme.ink,
-          color: theme.background,
+          backgroundColor: theme.card,
+          color: theme.cardInk,
           fontSize: 66,
           fontWeight: 700,
           lineHeight: 1.25,
@@ -115,7 +116,7 @@ export const MistakeScene: React.FC<MistakeSceneProps> = ({ number, mistake, fix
           }),
         }}
       >
-        <span style={{ color: "#4ade80" }}>✓ Fai così:</span> {fix}
+        <span style={{ color: theme.good }}>✓ Fai così:</span> {fix}
       </div>
     </AbsoluteFill>
   );
